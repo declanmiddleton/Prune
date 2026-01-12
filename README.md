@@ -6,7 +6,9 @@
   Recommended size: 1200x400px or similar aspect ratio
 -->
 
-![Prune Banner](./assets/banner.png)
+
+<img width="1280" height="720" alt="Untitled design(1)" src="https://github.com/user-attachments/assets/94bf5b99-65b3-4828-8078-95728bf9de22" />
+
 
 <!-- If hosting on GitHub, you can also use:
 ![Prune Banner](https://raw.githubusercontent.com/declanmiddleton/Prune/main/assets/banner.png)
