@@ -6,7 +6,7 @@
   Recommended size: 1200x400px or similar aspect ratio
 -->
 
-<img width="1280" height="720" alt="Untitled design" src="https://github.com/user-attachments/assets/d04cd8bb-b30e-4005-ad89-62cb877f370f" />
+<img width="1280" height="720" alt="Prune design" src="https://github.com/user-attachments/assets/d04cd8bb-b30e-4005-ad89-62cb877f370f" />
 
 
 <!-- If hosting on GitHub, you can also use:
