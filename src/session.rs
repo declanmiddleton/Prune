@@ -45,7 +45,17 @@ impl Default for ScanConfig {
         Self {
             crawling_enabled: false,
             rate_limit: 100,
-            excluded_status_codes: vec![404, 405, 501],
+            // Only show successful responses (200s) - exclude all error codes
+            excluded_status_codes: vec![
+                404,  // Not Found
+                403,  // Forbidden
+                429,  // Too Many Requests
+                500,  // Internal Server Error
+                502,  // Bad Gateway
+                504,  // Gateway Timeout
+                405,  // Method Not Allowed
+                501,  // Not Implemented
+            ],
             max_depth: 3,
             timeout_seconds: 10,
         }

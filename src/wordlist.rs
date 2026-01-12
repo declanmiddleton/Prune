@@ -5,6 +5,7 @@ use std::path::PathBuf;
 /// Wordlist manager for directory and subdomain discovery
 pub struct WordlistManager {
     wordlists_dir: PathBuf,
+    seclists_dir: Option<PathBuf>,
 }
 
 impl WordlistManager {
@@ -16,23 +17,115 @@ impl WordlistManager {
         // Create directories if they don't exist
         fs::create_dir_all(&wordlists_dir)?;
         
-        let manager = Self { wordlists_dir };
+        // Try to find SecLists installation
+        let seclists_dir = Self::find_seclists();
         
-        // Create default wordlists if they don't exist
-        manager.ensure_default_wordlists()?;
+        let manager = Self { 
+            wordlists_dir,
+            seclists_dir,
+        };
+        
+        // Create default wordlists if they don't exist and SecLists not found
+        if manager.seclists_dir.is_none() {
+            manager.ensure_default_wordlists()?;
+        }
         
         Ok(manager)
     }
     
-    /// Load directory wordlist
+    /// Find SecLists installation on the system
+    fn find_seclists() -> Option<PathBuf> {
+        // Common SecLists installation paths
+        let common_paths = vec![
+            "/usr/share/seclists",
+            "/usr/share/wordlists/seclists",
+            "/opt/seclists",
+            "/opt/SecLists",
+        ];
+        
+        // Also check home directory
+        if let Some(home) = dirs::home_dir() {
+            let home_paths = vec![
+                home.join("SecLists"),
+                home.join("seclists"),
+                home.join("wordlists/seclists"),
+                home.join("wordlists/SecLists"),
+                home.join("Tools/SecLists"),
+                home.join("tools/seclists"),
+            ];
+            
+            for path in home_paths {
+                if path.exists() && path.is_dir() {
+                    println!("✓ Found SecLists at: {}", path.display());
+                    return Some(path);
+                }
+            }
+        }
+        
+        // Check system paths
+        for path_str in common_paths {
+            let path = PathBuf::from(path_str);
+            if path.exists() && path.is_dir() {
+                println!("✓ Found SecLists at: {}", path.display());
+                return Some(path);
+            }
+        }
+        
+        println!("⚠ SecLists not found. Using built-in wordlists.");
+        println!("  Install SecLists: git clone https://github.com/danielmiessler/SecLists.git ~/SecLists");
+        None
+    }
+    
+    /// Load directory wordlist (prefers SecLists if available)
     pub fn load_directory_wordlist(&self) -> Result<Vec<String>> {
+        // Try SecLists first
+        if let Some(ref seclists) = self.seclists_dir {
+            // Use common directory wordlists from SecLists
+            let seclists_paths = vec![
+                seclists.join("Discovery/Web-Content/common.txt"),
+                seclists.join("Discovery/Web-Content/directory-list-2.3-medium.txt"),
+                seclists.join("Discovery/Web-Content/raft-medium-directories.txt"),
+            ];
+            
+            for path in seclists_paths {
+                if path.exists() {
+                    println!("→ Using SecLists wordlist: {}", path.file_name().unwrap().to_string_lossy());
+                    return self.load_wordlist_file(&path);
+                }
+            }
+        }
+        
+        // Fallback to built-in wordlist
         let path = self.wordlists_dir.join("directories.txt");
+        if !path.exists() {
+            self.ensure_default_wordlists()?;
+        }
         self.load_wordlist_file(&path)
     }
     
-    /// Load subdomain wordlist
+    /// Load subdomain wordlist (prefers SecLists if available)
     pub fn load_subdomain_wordlist(&self) -> Result<Vec<String>> {
+        // Try SecLists first
+        if let Some(ref seclists) = self.seclists_dir {
+            let seclists_paths = vec![
+                seclists.join("Discovery/DNS/subdomains-top1million-5000.txt"),
+                seclists.join("Discovery/DNS/dns-Jhaddix.txt"),
+                seclists.join("Discovery/DNS/namelist.txt"),
+            ];
+            
+            for path in seclists_paths {
+                if path.exists() {
+                    println!("→ Using SecLists wordlist: {}", path.file_name().unwrap().to_string_lossy());
+                    return self.load_wordlist_file(&path);
+                }
+            }
+        }
+        
+        // Fallback to built-in wordlist
         let path = self.wordlists_dir.join("subdomains.txt");
+        if !path.exists() {
+            self.ensure_default_wordlists()?;
+        }
         self.load_wordlist_file(&path)
     }
     

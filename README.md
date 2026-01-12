@@ -35,9 +35,10 @@
 **Traditional tools** flood targets with static wordlists, producing thousands of useless 404s and overwhelming you with noise.
 
 **Prune is different:**
-- ✨ **Learns From Responses** - Automatically detects wildcards and uninformative patterns
-- 🎯 **Reduces Noise** - Shows only meaningful findings, not every 404
-- 🧠 **Generates Mutations** - Creates intelligent path variations from discoveries
+- ✨ **Only Shows Valid Pages** - Automatically filters 404, 403, 429, 500, 502, 504 - you only see 200 OK responses
+- 🎯 **SecLists Integration** - Automatically finds and uses SecLists for comprehensive coverage
+- 🧠 **Learns From Responses** - Detects wildcards and uninformative patterns automatically
+- 🔄 **Generates Mutations** - Creates intelligent path variations from discoveries
 - 🚀 **Adapts Speed** - Adjusts request rate based on target responsiveness
 - 🎨 **Beautiful Output** - Clear, color-coded results with confidence indicators
 - 💾 **Session Management** - Resume long scans anytime
@@ -56,7 +57,9 @@
 | Feature | Description |
 |---------|-------------|
 | **Adaptive Intelligence** | Real-time learning from status codes, content patterns, and response behavior |
-| **Directory Discovery** | Smart enumeration with 850+ curated paths and pattern-based mutations |
+| **SecLists Integration** | Automatically finds and uses SecLists wordlists (falls back to built-in 850+ dirs) |
+| **Smart Filtering** | Only shows valid pages (200 OK) - automatically filters 404, 403, 429, 500, 502, 504 |
+| **Directory Discovery** | Intelligent enumeration with comprehensive wordlists and pattern-based mutations |
 | **Subdomain Enumeration** | DNS-aware discovery with 500+ common subdomains and intelligent variations |
 | **Combined Mode** | Coordinate both techniques with shared intelligence |
 | **Wildcard Detection** | Automatic identification and filtering of wildcard responses |
@@ -99,6 +102,26 @@ prune --help
 
 - **Rust 1.70+** ([Install Rust](https://rustup.rs/))
 - **Cargo** (comes with Rust)
+
+### Recommended: Install SecLists
+
+Prune automatically detects and uses **SecLists** wordlists for better coverage:
+
+```bash
+# Clone SecLists to your home directory
+git clone https://github.com/danielmiessler/SecLists.git ~/SecLists
+
+# Or install to /usr/share (requires sudo)
+sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/seclists
+```
+
+Prune will automatically find SecLists in common locations:
+- `~/SecLists` or `~/seclists`
+- `/usr/share/seclists`
+- `/opt/SecLists`
+- And more...
+
+**Without SecLists:** Prune falls back to built-in curated wordlists (850 dirs + 500 subdomains)
 
 ---
 
@@ -217,25 +240,28 @@ Directory Discovery
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ℹ Target: https://example.com
 ℹ Session: prune_1736694120
-⚙ Loaded 850 words, prioritized by confidence
+✓ Found SecLists at: /home/user/SecLists
+→ Using SecLists wordlist: common.txt
+⚙ Loaded 4,713 words, prioritized by confidence
 ℹ Starting scan with adaptive rate: 100 req/s
 
 200 │ https://example.com/admin (5.2KB) ●●●
-200 │ https://example.com/api/v1 (1.1KB) ●●●
+200 │ https://example.com/api (1.1KB) ●●●
+200 │ https://example.com/login (3.4KB) ●●●
 301 │ https://example.com/backup → /backups (0B) ●●○
-403 │ https://example.com/config (0B) ●●○
 
-⚙ Generated 8 adaptive mutations from successful patterns
-⚙ Excluded status codes: [404, 405, 502]
+⚙ Generated 12 adaptive mutations from successful patterns
+⚙ Filtered out: 404, 403, 429, 500, 502, 504 (only showing valid pages)
 
 → ████████████████████████████░░░░░░░░░░░░ 65% │ 89.3 req/s │ 4 discoveries
 
 Intelligence Summary
 ────────────────────────────────────────────────────────────
-  Excluded codes: [404, 405, 502]
+  Showing only: 200 OK, 301/302 redirects
+  Excluded codes: [404, 403, 429, 500, 502, 504]
   Wildcard patterns: 2
-  Generated mutations: 24
-  Overall confidence: 78.5%
+  Generated mutations: 32
+  Overall confidence: 82.3%
 
 ✓ Directory discovery complete!
 ```
@@ -283,7 +309,23 @@ When Prune finds `/admin`, it intelligently generates:
 
 ---
 
-## 📁 Data Storage
+## 📁 Data Storage & Wordlists
+
+### SecLists Integration (Recommended)
+
+Prune automatically detects SecLists installation:
+
+```bash
+# Install SecLists for maximum coverage
+git clone https://github.com/danielmiessler/SecLists.git ~/SecLists
+```
+
+**Wordlists used from SecLists:**
+- `Discovery/Web-Content/common.txt` (~4,700 entries)
+- `Discovery/Web-Content/directory-list-2.3-medium.txt` (~220,000 entries)
+- `Discovery/DNS/subdomains-top1million-5000.txt` (5,000 entries)
+
+### Local Storage
 
 Prune stores sessions and config in `~/.prune/`:
 
@@ -293,14 +335,14 @@ Prune stores sessions and config in `~/.prune/`:
 ├── sessions/                # Saved scan sessions
 │   ├── prune_1736694120.json
 │   └── prune_1736694189.json
-└── wordlists/               # Customizable wordlists
+└── wordlists/               # Fallback wordlists (if SecLists not found)
     ├── directories.txt      # 850+ curated paths
     └── subdomains.txt       # 500+ common subdomains
 ```
 
 ### Custom Wordlists
 
-Edit wordlists to match your targets:
+If you prefer custom wordlists over SecLists:
 
 ```bash
 # Add target-specific paths
@@ -309,6 +351,8 @@ nano ~/.prune/wordlists/directories.txt
 # Add common subdomains for your industry
 nano ~/.prune/wordlists/subdomains.txt
 ```
+
+Prune will use custom wordlists if SecLists is not installed.
 
 ---
 
@@ -353,11 +397,14 @@ Edit `~/.prune/config.json`:
 {
   "crawling_enabled": false,
   "rate_limit": 100,
-  "excluded_status_codes": [404, 405, 501],
+  "excluded_status_codes": [404, 403, 429, 500, 502, 504, 405, 501],
   "max_depth": 3,
   "timeout_seconds": 10
 }
 ```
+
+**Default behavior:** Only shows status 200 (OK) and 301/302 (redirects)  
+**Filtered by default:** 404, 403, 429, 500, 502, 504 and other error codes
 
 ### Environment Tuning
 

@@ -66,7 +66,17 @@ impl IntelligenceEngine {
             failing_patterns: Arc::new(DashMap::new()),
             tech_fingerprints: Arc::new(RwLock::new(HashSet::new())),
             naming_patterns: Arc::new(RwLock::new(Vec::new())),
-            excluded_codes: Arc::new(RwLock::new(HashSet::from([404, 405, 501]))),
+            // Exclude error and rate-limit codes by default - only show successful responses (200s)
+            excluded_codes: Arc::new(RwLock::new(HashSet::from([
+                404,  // Not Found
+                403,  // Forbidden
+                429,  // Too Many Requests
+                500,  // Internal Server Error
+                502,  // Bad Gateway
+                504,  // Gateway Timeout
+                405,  // Method Not Allowed
+                501,  // Not Implemented
+            ]))),
             stats: Arc::new(RwLock::new(RequestStats::default())),
         }
     }
@@ -323,7 +333,9 @@ impl IntelligenceEngine {
     }
     
     fn is_successful_status(&self, status: u16) -> bool {
-        matches!(status, 200..=299 | 301 | 302 | 401 | 403)
+        // Only consider 2xx successful and 301/302 redirects as interesting
+        // Everything else (including 401, 403) should be filtered
+        matches!(status, 200..=299 | 301 | 302)
     }
     
     fn extract_tech_fingerprints(&self, headers: &HashMap<String, String>, body: &str) {
