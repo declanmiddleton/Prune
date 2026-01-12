@@ -1,0 +1,37 @@
+[package]
+name = "prune"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.41", features = ["full"] }
+reqwest = { version = "0.12", features = ["json", "cookies"] }
+clap = { version = "4.5", features = ["derive", "color"] }
+colored = "2.1"
+crossterm = "0.28"
+indicatif = "0.17"
+console = "0.15"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+thiserror = "1.0"
+url = "2.5"
+regex = "1.11"
+scraper = "0.20"
+trust-dns-resolver = "0.23"
+dashmap = "6.1"
+parking_lot = "0.12"
+rayon = "1.10"
+futures = "0.3"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+rand = "0.8"
+sha2 = "0.10"
+base64 = "0.22"
+dirs = "5.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

@@ -1,0 +1,25 @@
+# Rust build artifacts
+/target
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prune data (user data should be in ~/.prune)
+/.prune
+sessions/
+*.session
+
+# Test results
+test-results/
+
+# Debug
+*.pdb
