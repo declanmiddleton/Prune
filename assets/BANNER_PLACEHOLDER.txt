@@ -1,0 +1,18 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                                  🌿 PRUNE 🌿                                 ║
+║                                                                              ║
+║                        Adaptive Discovery Engine                             ║
+║                                                                              ║
+║              Intelligent Web Discovery for Security Professionals            ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+This is a placeholder banner. 
+
+To add your custom banner:
+1. Design an image (1200x400px recommended)
+2. Save it as "banner.png" in this assets/ directory
+3. Commit and push to GitHub
+
+The README.md is already configured to display your banner automatically!

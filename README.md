@@ -1,52 +1,161 @@
-# Prune 🌿
+<div align="center">
 
-```
- ____  ____  _  _  __ _  ____ 
-(  _ \(  _ \/ )( \(  ( \(  __)
- ) __/ )   /) \/ (/    / ) _) 
-(__)  (__\_)\____/\_)__)(____)
-```
+<!-- 
+  BANNER IMAGE SECTION
+  Replace the path below with your custom banner image URL
+  Recommended size: 1200x400px or similar aspect ratio
+-->
 
-**Adaptive Discovery Engine for Penetration Testing**
+![Prune Banner](./assets/banner.png)
 
-Prune is an intelligent discovery tool that combines directory scanning, subdomain enumeration, and optional crawling into a single adaptive workflow. Instead of brute-forcing static wordlists, it learns from live responses, filters noise automatically, and prioritizes requests that are most likely to produce results.
+<!-- If hosting on GitHub, you can also use:
+![Prune Banner](https://raw.githubusercontent.com/declanmiddleton/Prune/main/assets/banner.png)
+-->
 
-## 🎯 Features
+<h1>🌿 Prune</h1>
 
-### Intelligent Adaptation
-- **Real-time Learning**: Observes response patterns and automatically excludes uninformative status codes
-- **Wildcard Detection**: Identifies and filters wildcard responses to reduce noise
-- **Pattern Recognition**: Learns from successful discoveries to generate intelligent mutations
-- **Technology Fingerprinting**: Detects technologies and frameworks to guide discovery
-- **Adaptive Rate Limiting**: Dynamically adjusts request rate based on target responsiveness
+**Adaptive Discovery Engine for Modern Security Testing**
 
-### Discovery Modes
-- **Directory Discovery**: Adaptive path enumeration with intelligent mutation
-- **Subdomain Enumeration**: DNS-aware subdomain discovery with pattern learning
-- **Combined Mode**: Coordinates both techniques, sharing intelligence between phases
-- **Optional Crawling**: Passive link extraction within strict rate limits
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Rust](https://img.shields.io/badge/rust-1.70%2B-orange.svg)](https://www.rust-lang.org/)
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey.svg)]()
 
-### User Experience
-- **Beautiful Terminal UI**: Calm, professional interface with blue/violet color scheme
-- **Real-time Feedback**: Live progress bars, discovery notifications, and adaptation indicators
-- **Session Persistence**: Save and resume scanning sessions
-- **Minimal Noise**: Only shows meaningful findings, filtered automatically
+[Features](#-what-is-prune) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation)
 
-## 🚀 Installation
+</div>
 
-### From Source
+---
+
+## 🎯 What is Prune?
+
+**Prune is an intelligent web discovery tool that learns as it scans.** Instead of blindly brute-forcing thousands of paths, Prune adapts in real-time—filtering noise, detecting patterns, and focusing on what actually matters.
+
+### Why Use Prune?
+
+**Traditional tools** flood targets with static wordlists, producing thousands of useless 404s and overwhelming you with noise.
+
+**Prune is different:**
+- ✨ **Learns From Responses** - Automatically detects wildcards and uninformative patterns
+- 🎯 **Reduces Noise** - Shows only meaningful findings, not every 404
+- 🧠 **Generates Mutations** - Creates intelligent path variations from discoveries
+- 🚀 **Adapts Speed** - Adjusts request rate based on target responsiveness
+- 🎨 **Beautiful Output** - Clear, color-coded results with confidence indicators
+- 💾 **Session Management** - Resume long scans anytime
+
+### Perfect For
+
+- 🔍 **Penetration Testing** - Comprehensive attack surface discovery
+- 🐛 **Bug Bounty Hunting** - Efficient reconnaissance with minimal noise
+- 🛡️ **Security Audits** - Professional asset enumeration
+- 🔬 **Research** - Technology fingerprinting and analysis
+
+---
+
+## ⚡ Features at a Glance
+
+| Feature | Description |
+|---------|-------------|
+| **Adaptive Intelligence** | Real-time learning from status codes, content patterns, and response behavior |
+| **Directory Discovery** | Smart enumeration with 850+ curated paths and pattern-based mutations |
+| **Subdomain Enumeration** | DNS-aware discovery with 500+ common subdomains and intelligent variations |
+| **Combined Mode** | Coordinate both techniques with shared intelligence |
+| **Wildcard Detection** | Automatic identification and filtering of wildcard responses |
+| **Technology Fingerprinting** | Detects web servers, frameworks, and tech stacks |
+| **Passive Crawling** | Optional link extraction from discovered pages |
+| **Session Persistence** | Save and resume scanning sessions |
+| **Rate Adaptation** | Dynamically adjusts from 50-200 req/s based on target |
+| **Beautiful UI** | Professional terminal interface with calm color scheme |
+
+---
+
+## 📦 Installation
+
+### Quick Install
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/prune
-cd prune
+git clone https://github.com/declanmiddleton/Prune.git
+cd Prune
 
-# Build with Cargo
+# Build the release binary
 cargo build --release
 
-# Install to system
-cargo install --path .
+# Run Prune
+./target/release/prune --help
 ```
+
+### System-Wide Installation
+
+```bash
+# Install using Cargo
+cd Prune
+cargo install --path .
+
+# Now run from anywhere
+prune --help
+```
+
+### Prerequisites
+
+- **Rust 1.70+** ([Install Rust](https://rustup.rs/))
+- **Cargo** (comes with Rust)
+
+---
+
+## 🚀 Quick Start
+
+### 1. Your First Scan
+
+Discover hidden directories on a target:
+
+```bash
+prune dir https://example.com
+```
+
+**What happens:**
+- Prune loads its intelligent wordlist
+- Tests paths with adaptive concurrency
+- Learns patterns and filters noise automatically
+- Shows only meaningful findings
+
+### 2. Find Subdomains
+
+Enumerate subdomains with DNS awareness:
+
+```bash
+prune sub example.com
+```
+
+**Features:**
+- DNS resolution before HTTP requests
+- Smart naming pattern detection
+- Automatic mutation generation
+- Conservative rate limiting
+
+### 3. Combined Discovery
+
+Run both modes with shared intelligence:
+
+```bash
+prune both https://example.com
+```
+
+**Intelligence sharing:**
+- Discoveries inform both scanners
+- Patterns learned in one mode benefit the other
+- Coordinated scanning for maximum efficiency
+
+### 4. Interactive Mode
+
+Let Prune guide you:
+
+```bash
+prune scan https://example.com
+```
+
+Choose your discovery mode interactively with helpful prompts.
+
+---
 
 ## 📖 Usage
 
@@ -54,128 +163,187 @@ cargo install --path .
 
 ```bash
 # Interactive mode - prompts for scan type
-prune scan https://example.com
+prune scan <url>
 
 # Directory discovery only
-prune dir https://example.com
+prune dir <url>
 
 # Subdomain enumeration only
-prune sub example.com
+prune sub <domain>
 
-# Both modes with shared intelligence
-prune both https://example.com
+# Combined discovery (recommended)
+prune both <url>
 ```
 
 ### Configuration
 
 ```bash
-# Enable passive crawling
+# Enable passive crawling for deeper discovery
 prune crawl on
 
-# Disable crawling
-prune crawl off
+# Set request rate (slow, normal, fast)
+prune rate slow       # ~50 req/s (conservative)
+prune rate normal     # ~100 req/s (default)
+prune rate fast       # ~200 req/s (aggressive)
 
-# Manually exclude status codes
-prune status exclude 404,503,500
-
-# Set request rate limit
-prune rate slow     # ~50 req/s
-prune rate normal   # ~100 req/s (default)
-prune rate fast     # ~200 req/s
+# Manually exclude noisy status codes
+prune status exclude 404,502,503
 ```
 
 ### Session Management
 
 ```bash
-# Resume last session
+# Resume your last scan
 prune resume
 
 # View results from last session
 prune results
 ```
 
+---
+
+## 🎨 Example Output
+
+```
+ ____  ____  _  _  __ _  ____ 
+(  _ \(  _ \/ )( \(  ( \(  __)
+ ) __/ )   /) \/ (/    / ) _) 
+(__)  (__\_)\____/\_)__)(____)
+
+Adaptive Discovery Engine
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Directory Discovery
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ℹ Target: https://example.com
+ℹ Session: prune_1736694120
+⚙ Loaded 850 words, prioritized by confidence
+ℹ Starting scan with adaptive rate: 100 req/s
+
+200 │ https://example.com/admin (5.2KB) ●●●
+200 │ https://example.com/api/v1 (1.1KB) ●●●
+301 │ https://example.com/backup → /backups (0B) ●●○
+403 │ https://example.com/config (0B) ●●○
+
+⚙ Generated 8 adaptive mutations from successful patterns
+⚙ Excluded status codes: [404, 405, 502]
+
+→ ████████████████████████████░░░░░░░░░░░░ 65% │ 89.3 req/s │ 4 discoveries
+
+Intelligence Summary
+────────────────────────────────────────────────────────────
+  Excluded codes: [404, 405, 502]
+  Wildcard patterns: 2
+  Generated mutations: 24
+  Overall confidence: 78.5%
+
+✓ Directory discovery complete!
+```
+
+### Understanding the Output
+
+| Symbol | Meaning |
+|--------|---------|
+| `●●●` | High confidence (80%+) - Likely important |
+| `●●○` | Medium confidence (50-80%) - Worth investigating |
+| `●○○` | Low confidence (<50%) - Possibly interesting |
+| `⚙` | Intelligence feedback - Prune is learning and adapting |
+
+---
+
 ## 🧠 How Intelligence Works
 
-### Response Learning
-Prune learns from every response:
-- Tracks status code patterns and frequencies
-- Calculates average response sizes
-- Identifies wildcard behaviors
-- Detects uninformative responses
+Prune's adaptive engine learns from every response:
 
-### Pattern Recognition
-When discoveries are made:
-- Extracts successful path patterns
-- Learns naming conventions
-- Generates intelligent mutations
-- Prioritizes similar words
+### 1. Pattern Recognition
+- Tracks status code frequencies and patterns
+- Identifies uninformative responses automatically
+- Learns successful path structures
 
-### Adaptive Filtering
-Automatically excludes:
-- Wildcard responses (same size/content)
-- Uninformative status codes (seen >50 times)
-- Consistently failing patterns
-- Out-of-scope resources
+### 2. Wildcard Detection
+- Calculates content signatures (SHA256)
+- Detects identical responses with different paths
+- Auto-excludes wildcard patterns
 
-### Technology Fingerprinting
-Detects technologies from headers and body:
-- Web servers (nginx, Apache)
-- Frameworks (Laravel, WordPress)
-- Languages (PHP, Python)
-- API patterns
+### 3. Technology Fingerprinting
+- Identifies web servers (nginx, Apache, IIS)
+- Detects frameworks (WordPress, Laravel, Django)
+- Discovers API patterns (REST, GraphQL)
 
-### Mutation Generation
-Creates intelligent variations:
-- Based on successful patterns
-- Common backup/old file patterns
-- API versioning (v1, v2, etc.)
-- Technology-specific paths
+### 4. Smart Mutations
+When Prune finds `/admin`, it intelligently generates:
+- `/admin/login`, `/admin/dashboard`, `/admin/config`
+- `/admin.bak`, `/admin.old`, `/admin~`
+- `/api/admin`, `/v1/admin`
 
-## 🎨 Visual Design
+### 5. Adaptive Rate Control
+- Slows down for slow/rate-limited targets
+- Speeds up for fast-responding servers
+- Prevents DoS conditions automatically
 
-Prune uses a consistent two-color system:
-
-- **Primary Color** (`#2596be` - Blue): Active prompts, progress bars, discoveries
-- **Secondary Color** (`#5621d5` - Violet): Metadata, status info, intelligence updates
-- **Accent**: Lighter tints for subtle feedback
-- **Warnings**: Muted yellow/red (used sparingly)
+---
 
 ## 📁 Data Storage
 
-Prune stores data in `~/.prune/`:
+Prune stores sessions and config in `~/.prune/`:
 
 ```
 ~/.prune/
-├── config.json           # User configuration
-├── sessions/             # Saved scan sessions
-│   ├── prune_1234567890.json
-│   └── prune_1234567891.json
-└── wordlists/            # Discovery wordlists
-    ├── directories.txt   # Directory wordlist
-    └── subdomains.txt    # Subdomain wordlist
+├── config.json              # User preferences
+├── sessions/                # Saved scan sessions
+│   ├── prune_1736694120.json
+│   └── prune_1736694189.json
+└── wordlists/               # Customizable wordlists
+    ├── directories.txt      # 850+ curated paths
+    └── subdomains.txt       # 500+ common subdomains
 ```
-
-## 🛡️ Safety Features
-
-- **Conservative DNS Rate Limiting**: Prevents DNS abuse
-- **Adaptive Request Pacing**: Slows down when target is slow
-- **Timeout Protection**: Prevents hanging on slow targets
-- **Scope Enforcement**: Stays within target domain
-- **Crawl Limits**: Strict limits on crawled pages
-
-## 🔧 Advanced Configuration
 
 ### Custom Wordlists
 
-Replace default wordlists in `~/.prune/wordlists/`:
+Edit wordlists to match your targets:
 
 ```bash
-# Custom directory wordlist
-~/.prune/wordlists/directories.txt
+# Add target-specific paths
+nano ~/.prune/wordlists/directories.txt
 
-# Custom subdomain wordlist
-~/.prune/wordlists/subdomains.txt
+# Add common subdomains for your industry
+nano ~/.prune/wordlists/subdomains.txt
 ```
+
+---
+
+## 🛡️ Safety & Responsible Use
+
+Prune is designed with safety in mind:
+
+✅ **Conservative Defaults** - Safe rate limits out of the box  
+✅ **Adaptive Throttling** - Automatically slows for struggling targets  
+✅ **Request Timeouts** - Prevents hanging on slow endpoints  
+✅ **No Destructive Actions** - Read-only operations  
+✅ **Scope Enforcement** - Stays within target domain
+
+### ⚠️ Legal Notice
+
+**Only scan targets you have explicit permission to test.**
+
+Unauthorized scanning may be illegal in your jurisdiction. Always:
+- Obtain written permission before testing
+- Respect scope and rules of engagement
+- Follow responsible disclosure practices
+- Stay within legal and ethical boundaries
+
+---
+
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - Get up and running in 5 minutes
+- **[Architecture Overview](ARCHITECTURE.md)** - Technical design and internals
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to Prune
+- **[Changelog](CHANGELOG.md)** - Version history and updates
+
+---
+
+## 🔧 Advanced Configuration
 
 ### Configuration File
 
@@ -191,117 +359,121 @@ Edit `~/.prune/config.json`:
 }
 ```
 
-## 🎯 Use Cases
+### Environment Tuning
 
-### Penetration Testing
-- Discover hidden directories and files
-- Enumerate subdomains for expanded attack surface
-- Find backup files and development resources
-- Identify API endpoints and versions
+```bash
+# Maximum performance (use with caution)
+prune rate fast
+prune crawl on
 
-### Bug Bounty Hunting
-- Efficient reconnaissance with minimal noise
-- Adaptive scanning that respects rate limits
-- Technology fingerprinting for targeted testing
-- Session resumption for long-running scans
+# Stealth mode (slow and quiet)
+prune rate slow
+prune crawl off
 
-### Security Audits
-- Comprehensive asset discovery
-- Technology stack identification
-- Wildcard and virtual host detection
-- Clean, professional reporting
-
-## 🤝 Best Practices
-
-1. **Start Conservative**: Use `normal` or `slow` rate limits initially
-2. **Enable Crawling Selectively**: Only when you need deeper discovery
-3. **Review Intelligence**: Check excluded codes and wildcards
-4. **Resume Long Scans**: Use `prune resume` for interrupted scans
-5. **Respect Scope**: Only scan targets you have permission to test
-
-## 📊 Example Output
-
+# Balanced (recommended for most scenarios)
+prune rate normal
+prune crawl off
 ```
- ____  ____  _  _  __ _  ____ 
-(  _ \(  _ \/ )( \(  ( \(  __)
- ) __/ )   /) \/ (/    / ) _) 
-(__)  (__\_)\____/\_)__)(____)
-
-Adaptive Discovery Engine
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Directory Discovery
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ℹ Target: https://example.com
-ℹ Session: prune_1234567890
-ℹ Loading wordlist...
-⚙ Loaded 850 words, prioritized by confidence
-ℹ Starting scan with adaptive rate: 100 req/s
-
-200 │ https://example.com/admin (5.2KB) ●●●
-200 │ https://example.com/api/v1 (1.1KB) ●●●
-301 │ https://example.com/old (0B) ●●○
-403 │ https://example.com/config (0B) ●○○
-
-⚙ Generated 8 adaptive mutations from successful patterns
-⚙ Adapting rate limit: 100 → 75 req/s
-
-→ ████████████████████████████░░░░░░░░░░░░ 65% │ 89.3 req/s │ 4 discoveries
-
-Intelligence Summary
-────────────────────────────────────────────────────────────
-  Excluded codes: [404, 405, 502]
-  Wildcard patterns: 2
-  Generated mutations: 24
-  Overall confidence: 78.5%
-
-✓ Directory discovery complete!
-```
-
-## 🐛 Troubleshooting
-
-### No Results Found
-- Check if target is reachable
-- Verify URL format includes scheme (http:// or https://)
-- Try lowering rate limit: `prune rate slow`
-- Check excluded status codes in config
-
-### Too Many False Positives
-- Intelligence is still learning (wait for ~50 requests)
-- Manually exclude status codes: `prune status exclude 200`
-- Review wildcard detection in intelligence summary
-
-### DNS Errors (Subdomain Mode)
-- Check DNS resolver configuration
-- Try reducing rate: `prune rate slow`
-- Verify domain is valid and resolvable
-
-## 📝 License
-
-MIT License - See LICENSE file for details
-
-## 🙏 Credits
-
-Built with:
-- [tokio](https://tokio.rs/) - Async runtime
-- [reqwest](https://github.com/seanmonstar/reqwest) - HTTP client
-- [clap](https://github.com/clap-rs/clap) - CLI parsing
-- [colored](https://github.com/mackwic/colored) - Terminal colors
-- [trust-dns](https://github.com/bluejekyll/trust-dns) - DNS resolution
-- [scraper](https://github.com/causal-agent/scraper) - HTML parsing
-
-## 🔮 Roadmap
-
-- [ ] Machine learning-based wordlist optimization
-- [ ] Cloud function and serverless detection
-- [ ] API schema discovery and fuzzing
-- [ ] GraphQL endpoint enumeration
-- [ ] Authentication-aware scanning
-- [ ] Distributed scanning support
-- [ ] Export to common formats (JSON, CSV, XML)
 
 ---
 
-**Made with 💜 for the security community**
+## 🤝 Contributing
 
-*Remember: Only scan targets you have explicit permission to test.*
+Contributions are welcome! Whether it's:
+
+- 🐛 Bug reports and fixes
+- ✨ New features and enhancements
+- 📖 Documentation improvements
+- 💡 Ideas and suggestions
+
+Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+
+---
+
+## 🗺️ Roadmap
+
+### v0.2.0 (Planned)
+- [ ] Machine learning-based wordlist optimization
+- [ ] Enhanced mutation algorithms
+- [ ] GraphQL endpoint discovery
+- [ ] Export formats (JSON, CSV, XML)
+
+### v0.3.0 (Planned)
+- [ ] Distributed scanning support
+- [ ] Plugin architecture
+- [ ] Authentication-aware scanning
+- [ ] Cloud function detection
+
+### v1.0.0 (Future)
+- [ ] Full API fuzzing capabilities
+- [ ] Advanced ML pattern recognition
+- [ ] Professional report generation
+- [ ] Commercial support options
+
+---
+
+## 💬 Support & Community
+
+- **Issues**: [Report bugs or request features](https://github.com/declanmiddleton/Prune/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/declanmiddleton/Prune/discussions)
+- **Security**: Found a vulnerability? Please report responsibly
+
+---
+
+## 📊 Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Lines of Code** | 3,500+ |
+| **Dependencies** | 25+ Rust crates |
+| **Binary Size** | 6.1 MB (optimized) |
+| **Default Wordlists** | 1,350+ entries |
+| **Request Rate** | 50-200 req/s (adaptive) |
+| **Concurrency Model** | Async with Tokio |
+
+---
+
+## 🙏 Acknowledgments
+
+Built with these amazing open-source projects:
+
+- [Tokio](https://tokio.rs/) - Async runtime
+- [Reqwest](https://github.com/seanmonstar/reqwest) - HTTP client
+- [Trust-DNS](https://github.com/bluejekyll/trust-dns) - DNS resolution
+- [Clap](https://github.com/clap-rs/clap) - CLI parsing
+- [Colored](https://github.com/mackwic/colored) - Terminal colors
+
+And the entire Rust community for creating such a powerful language! 🦀
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License - Copyright (c) 2026 Declan Middleton
+```
+
+---
+
+## ⭐ Show Your Support
+
+If Prune helped you discover something interesting, consider:
+
+- ⭐ **Starring this repository**
+- 🐛 **Reporting bugs** to help improve the tool
+- 💡 **Sharing your experience** with the community
+- 🤝 **Contributing** new features or improvements
+
+---
+
+<div align="center">
+
+**Made with 💜 by [Declan Middleton](https://github.com/declanmiddleton)**
+
+*"Trim the noise. Find what matters."* 🌿
+
+[⬆ Back to Top](#-prune)
+
+</div>
