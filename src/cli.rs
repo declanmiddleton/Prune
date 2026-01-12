@@ -29,6 +29,9 @@ pub enum Commands {
     /// Run both directory and subdomain discovery together
     Both { url: String },
     
+    /// Launch graphical user interface
+    Gui,
+    
     /// Configure crawling behavior
     Crawl {
         #[arg(value_enum)]

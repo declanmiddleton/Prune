@@ -58,6 +58,7 @@
 
 | Feature | Description |
 |---------|-------------|
+| **🎨 Graphical Interface** | Modern GUI with visual controls, progress tracking, and easy wordlist selection |
 | **Adaptive Intelligence** | Real-time learning from status codes, content patterns, and response behavior |
 | **SecLists Integration** | Automatically finds and uses SecLists wordlists (falls back to built-in 850+ dirs) |
 | **Smart Filtering** | Only shows valid pages (200 OK) - automatically filters 404, 403, 429, 500, 502, 504 |
@@ -67,9 +68,9 @@
 | **Wildcard Detection** | Automatic identification and filtering of wildcard responses |
 | **Technology Fingerprinting** | Detects web servers, frameworks, and tech stacks |
 | **Passive Crawling** | Optional link extraction from discovered pages |
-| **Session Persistence** | Save and resume scanning sessions |
+| **Session Persistence** | Save and resume scanning sessions (CLI mode) |
 | **Rate Adaptation** | Dynamically adjusts from 50-200 req/s based on target |
-| **Beautiful UI** | Professional terminal interface with calm color scheme |
+| **Beautiful UI** | Professional GUI + terminal interface with calm color scheme |
 
 ---
 
@@ -129,7 +130,24 @@ Prune will automatically find SecLists in common locations:
 
 ## 🚀 Quick Start
 
-### 1. Your First Scan
+### 0. Use the Graphical Interface (Easiest!)
+
+For a visual experience with point-and-click simplicity:
+
+```bash
+prune gui
+```
+
+**Features:**
+- 🎨 Beautiful modern interface
+- 📁 Browse and select custom wordlists
+- ⚙️ Configure all options visually
+- 📊 Real-time progress tracking
+- 💾 Export results to JSON/CSV
+
+[Full GUI Guide →](GUI_GUIDE.md)
+
+### 1. Your First CLI Scan
 
 Discover hidden directories on a target:
 
@@ -187,6 +205,9 @@ Choose your discovery mode interactively with helpful prompts.
 ### Basic Commands
 
 ```bash
+# Graphical interface (NEW!)
+prune gui
+
 # Interactive mode - prompts for scan type
 prune scan <url>
 
@@ -382,6 +403,7 @@ Unauthorized scanning may be illegal in your jurisdiction. Always:
 
 ## 📚 Documentation
 
+- **[GUI Guide](GUI_GUIDE.md)** - Complete graphical interface tutorial
 - **[Quick Start Guide](QUICKSTART.md)** - Get up and running in 5 minutes
 - **[Architecture Overview](ARCHITECTURE.md)** - Technical design and internals
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to Prune
